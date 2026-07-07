@@ -1,0 +1,152 @@
+PARABANK PLAYWRIGHT FRAMEWORK - PROJECT CONTEXT
+=================================================
+Last updated: 2026-07-06
+
+WHO THIS IS FOR
+---------------
+Hagai - 8 years of manual/automation QA experience. Learning TypeScript from
+the ground up (classes, inheritance, super(), access modifiers, async/await,
+imports/exports, interfaces). This framework doubles as the vehicle for
+learning TypeScript while producing a real, working Page Object Model
+automation suite.
+
+PURPOSE
+-------
+Building toward offering QA/automation consulting services to clients.
+This project is both a learning exercise and a portfolio-quality reference
+framework that demonstrates POM structure, TypeScript fundamentals applied
+correctly, and real working tests against a live demo application.
+
+TARGET SITE
+-----------
+https://parabank.parasoft.com - Parasoft's public banking demo app (old
+Java/JSP app). Key quirks learned so far:
+  - The login sidebar box persists on EVERY page via a shared layout
+    template - it is not a single-page app. This means pages like
+    register.htm have TWO sets of username/password fields on screen at
+    once: the sidebar's plain `username`/`password`, and the form's own
+    `customer.username`/`customer.password`. Selectors must be specific
+    enough to avoid grabbing the wrong one.
+  - There is no standing demo login account. A fresh account must be
+    registered to get valid credentials for any login test.
+  - Registering a new user AUTO-LOGS them in immediately (sidebar switches
+    to an account menu with "Log Out" - no separate login step happens).
+  - There is no delete-user/deactivate-account feature anywhere in the UI.
+    Test accounts accumulate permanently. Parasoft appears to periodically
+    wipe/reset the whole demo database on their end (site published a
+    "ParaBank Is Now Re-Opened" notice).
+  - Successful registration lands on a page titled
+    "ParaBank | Customer Created".
+
+SCOPE
+-----
+Long-term goal: full site coverage (accounts overview, transfer funds, bill
+pay, loans, contact info updates, admin panel, etc.), built incrementally.
+No fixed deadline - pace is driven by learning, not a due date.
+
+PROJECT STRUCTURE / CONVENTIONS ESTABLISHED SO FAR
+---------------------------------------------------
+pages/        - one class per page, each extends BasePage
+tests/        - one spec file per feature/flow
+testData/     - factory functions that generate test data objects (not
+                static hardcoded data, since e.g. usernames must be unique
+                per registration - factories use Date.now() for that)
+
+Conventions in use:
+  - Locator fields are private, built once in the constructor.
+  - Selectors are always verified against the live DOM before being
+    written into code - never guessed.
+  - Each page object owns a `private readonly url` plus a `goto()` method
+    that calls the inherited `navigate()` - callers never hardcode a path.
+  - Methods that would otherwise take many positional string params
+    instead take a single object typed with an exported interface (e.g.
+    RegistrationDetails). Interfaces currently live in the same file as
+    the class that primarily consumes them; move to a shared `types/`
+    folder only once a second real consumer appears - not preemptively.
+  - Locators/fields are only promoted out of "one-off inline" status when
+    there's a genuine anticipated reuse within the class - not just
+    because a test scenario technically touches them.
+
+CURRENT STATUS
+--------------
+Done and verified (passing, run via `npx playwright test --project=chromium`):
+  - BasePage: page field (protected), navigate(), getTitle(), waitForPageLoad()
+  - LoginPage: fills + submits credentials, login() takes raw username/password
+  - RegisterPage + RegistrationDetails interface: full registration flow,
+    verified against live selectors, includes goto()/url pattern
+  - testData/registrationData.ts: createRegistrationDetails() factory with
+    unique username per call
+  - Register.spec.ts: registers a user, asserts "ParaBank | Customer Created"
+
+In progress / next up:
+  - Login.spec.ts: still needs goto() call + assertion (was mid-build when
+    we paused to build RegisterPage)
+  - AccountOverviewPage with a logout() method - needed to enable a real
+    "register -> logout -> login" test, since there's no standing account
+    to log in with otherwise
+  - Eventually: Accounts Overview, Transfer Funds, Bill Pay, and other
+    banking flows per the "full site coverage" goal
+
+LEARNING ROADMAP - GATE ON NEW CONCEPTS
+-----------------------------------------
+STATUS: BASE COMPLETE as of 2026-07-06. Full flow passing: register ->
+logout -> login -> land on Accounts Overview (title-asserted), plus an
+invalid-login-credentials test. Both in tests/Login.spec.ts and
+tests/Register.spec.ts, sharing helpers/userFlows.ts (registerNewUser,
+loginUser). The gate described below has been satisfied and is now
+lifted - new concepts can be introduced organically going forward.
+
+"Base complete" = one full end-to-end user flow passing: register -> logout
+-> login -> land on Accounts Overview, verified by a test. Do NOT introduce
+any new TypeScript/testing concept beyond what's already in use until that
+milestone is hit.
+
+Once base is complete, introduce these ONLY organically, at the point the
+framework actually needs them for the task at hand - not preemptively, not
+batched as lessons:
+  - Collections and loops
+  - Data structures and test data files (beyond the existing
+    RegistrationDetails/testData factory pattern)
+  - Error handling with try/catch
+  - Version control with git (specifically include: .env files + .gitignore
+    for keeping secrets like passwords/SSNs out of the repo, not just git
+    basics in the abstract - he raised this need explicitly on 2026-07-06)
+
+Hagai has some prior exposure to these but wants to solidify how/where to
+apply them through real need in this framework, not abstract review.
+
+Method for every new concept, always: "show-explain-replicate" - show a
+completed example, explain it tied to OOP concepts he already knows
+(classes, inheritance, super(), access modifiers, async/await, interfaces),
+then have him build it himself. No front-loaded theory.
+
+TEACHING STYLE
+---------------
+Full step-by-step walkthroughs for every new file/concept, for now - Hagai
+wants to build understanding deliberately rather than move fast. He will
+say when he's ready to move faster; don't assume it based on how many
+files have been built. Hands-on: he writes the code himself after each
+explanation, then pastes it back for review rather than having changes
+applied for him directly.
+
+He learns concepts noticeably better through real-world analogies rather
+than just code examples/abstract definitions - e.g., a rental lease
+agreement worked well for explaining "declaration vs. assignment" (the
+lease clause is the rule/contract, the tenant actually paying each month
+is the assignment satisfying it). Lead with an everyday analogy when
+introducing a new TypeScript/OOP concept.
+
+ALWAYS name the file before/alongside EVERY code snippet, no exceptions -
+including each step of a multi-step walkthrough within the same file
+(restate "In tests/Login.spec.ts:" on step 2, 3, 4, etc., don't just imply
+it from earlier steps). He has multiple files open at once; dropping the
+filename even once is real friction, not a one-time reminder to apply
+loosely.
+
+Two-phase arrangement, explicit: Phase 1 (current, "learning phase") -
+never apply edits/fixes directly (no Edit/Write on his code files) unless
+he explicitly says to. Only describe the fix, with filename, and let him
+type it himself. Phase 2 (later, "delegation phase") - once he's
+comfortable with the concepts, he will say so and hand off most of the
+hands-on coding. Do not assume the switch to phase 2 - wait for him to
+state it explicitly.
