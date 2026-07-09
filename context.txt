@@ -67,6 +67,18 @@ Conventions in use:
     there's a genuine anticipated reuse within the class - not just
     because a test scenario technically touches them.
 
+DEFERRED DESIGN DECISION
+-------------------------
+logout() currently lives on AccountOverviewPage, even though the logout
+link is really part of the persistent sidebar shared by every logged-in
+page (not specific to Accounts Overview). Architecturally correct fix: a
+composed NavigationSidebar component class that every logged-in page holds
+as a field, rather than BasePage or any one page owning logout directly.
+Deliberately not built yet - no test has needed logout() from a page other
+than AccountOverviewPage. Build NavigationSidebar the moment a test needs
+.logout() from a different page (TransferFundsPage, OpenNewAccountPage,
+etc.) - that's the concrete trigger, not before.
+
 CURRENT STATUS
 --------------
 Done and verified (passing, run via `npx playwright test --project=chromium`):
@@ -119,6 +131,20 @@ Method for every new concept, always: "show-explain-replicate" - show a
 completed example, explain it tied to OOP concepts he already knows
 (classes, inheritance, super(), access modifiers, async/await, interfaces),
 then have him build it himself. No front-loaded theory.
+
+GIT WORKFLOW HABIT (confirmed 2026-07-06): commit and push after every
+small change - even just 1-2 tests - specifically to build git fluency
+through repetition, not just to version-control the code. Reinforce this,
+don't batch changes into rare large commits.
+
+Next-level git skills to bring in progressively, one at a time, only when
+a concrete opportunity fits (not a batch lesson):
+  1. Checking `git status`/`git diff` before staging, as a review habit
+  2. Feature branches (`git checkout -b feature/x`) instead of committing
+     straight to main - good fit for the next new page object
+  3. Commit message conventions (feat:/fix:/test: prefixes)
+  4. Opening a pull request on GitHub even solo, to mirror real team
+     review workflow - relevant given the consulting goal
 
 TEACHING STYLE
 ---------------
