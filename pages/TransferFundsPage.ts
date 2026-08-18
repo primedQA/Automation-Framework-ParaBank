@@ -40,11 +40,11 @@ export class TransferFundsPage extends BasePage {
         await this.transferCompleteMessage.waitFor();
     }
 
-    async getTransferResults(): Promise<{amount:string, fromAccountId:string, toAccountId:string}> {
+    async getTransferResults(): Promise<{amount:number, fromAccountId:string, toAccountId:string}> {
 
 
         return {
-            amount: (await this.amountResult.textContent()) ?? '',
+            amount: parseFloat((await this.amountResult.textContent())?.replace('$', '') ?? '0'),
             fromAccountId: (await this.fromAccountResult.textContent()) ?? '',
             toAccountId: (await this.toAccountResult.textContent()) ?? '',
             
