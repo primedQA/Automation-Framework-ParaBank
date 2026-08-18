@@ -4,7 +4,6 @@ import { AccountOverviewPage } from '../pages/AccountOverviewPage';
 
 test('logs in successfully after registering', async ({ page }) => {
     const registrationDetails = await registerNewUser(page);
-    await expect(page).toHaveTitle('ParaBank | Customer Created');
 
     const accountOverviewPage = new AccountOverviewPage(page);
     await accountOverviewPage.logout();

@@ -3,11 +3,12 @@ import { BasePage } from './BasePage';
 
 export class OpenNewAccountPage extends BasePage {
 
+    private readonly url = '/parabank/openaccount.htm';
     private accountTypeSelect: Locator;
     private fromAccountSelect: Locator;
     private openAccountButton: Locator;
     private newAccountIdText: Locator;
-    private readonly url = '/parabank/openaccount.htm'; 
+    private newAccountId: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -15,6 +16,7 @@ export class OpenNewAccountPage extends BasePage {
         this.fromAccountSelect = page.locator('#fromAccountId');
         this.openAccountButton = page.locator('input[value="Open New Account"]');
         this.newAccountIdText = page.locator('#newAccountId');
+        this.newAccountId = page.locator('#newAccountId')
 
     }
 
@@ -28,5 +30,7 @@ export class OpenNewAccountPage extends BasePage {
         await this.openAccountButton.click();
         await this.newAccountIdText.waitFor();
         return (await this.newAccountIdText.textContent()) ?? '';
+        //return {initialAccountId, this.newAccountId, allAccountIds};
+        
     }
 }

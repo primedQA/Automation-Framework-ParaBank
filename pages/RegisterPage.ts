@@ -17,6 +17,8 @@ export interface RegistrationDetails {
 
 export class RegisterPage extends BasePage {
 
+    static readonly successTitle = 'ParaBank | Customer Created'
+
     private firstNameInput: Locator;
     private lastNameInput: Locator;
     private addressInput: Locator;
