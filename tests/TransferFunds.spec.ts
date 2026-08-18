@@ -8,10 +8,13 @@ test('transfer funds between accounts', async ({ page }) => {
 
     const transferFundsPage = new TransferFundsPage(page);
 
-    await 
+    await transferFundsPage.goto();
+    
+    await transferFundsPage.transferFunds('1000.00', initialAccountId, newAccountId)
 
+    const results = await transferFundsPage.getTransferResults();
 
-
-
-
+    expect(results.fromAccountId).toBe(initialAccountId);
+    expect(results.toAccountId).toBe(newAccountId);
+    expect(results.amount).toBe(1000.00);
 })
