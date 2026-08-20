@@ -18,6 +18,6 @@ test('logs in successfully after registering', async ({ page }) => {
 
 
 test('rejects invalid login credentials', async ({ page }) => {
-    await loginUser(page, { username: 'invalid_user', password: 'invalid_password' });
+    await loginUser(page, { username: `nonexistent_user_${Date.now()}`, password: 'invalid_password' });
     await expect(page).not.toHaveURL(/overview/);
 });
