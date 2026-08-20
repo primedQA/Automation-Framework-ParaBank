@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { TransferFundsPage } from '../pages/TransferFundsPage';
-import { openAccount } from '../helpers/userFlows';
+import { registerAndOpenAccount } from '../helpers/userFlows';
 
 
 test('transfer funds between accounts', async ({ page }) => {
-    const { initialAccountId, newAccountId } = await openAccount(page);
+    const { initialAccountId, newAccountId } = await registerAndOpenAccount(page);
 
     const transferFundsPage = new TransferFundsPage(page);
 
