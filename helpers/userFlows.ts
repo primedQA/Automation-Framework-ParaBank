@@ -25,7 +25,8 @@ export async function loginUser(page: Page, credentials: LoginCredentials): Prom
   await loginPage.login(credentials);
 }
 
-export async function openAccount(page: Page): Promise<{initialAccountId:string; newAccountId: string; allAccountIds: string[] }> {
+  export async function registerAndOpenAccount(page: Page, accountType: string = 'SAVINGS'): Promise<{initialAccountId:string; newAccountId: string; allAccountIds: string[] }> {
+
   await registerNewUser(page);
 
   const accountOverviewPage = new AccountOverviewPage(page);
@@ -34,7 +35,8 @@ export async function openAccount(page: Page): Promise<{initialAccountId:string;
 
   const openNewAccountPage = new OpenNewAccountPage(page);
   await openNewAccountPage.goto();
-  const newAccountId = await openNewAccountPage.openAccount('SAVINGS', initialAccountId);
+  
+  const newAccountId = await openNewAccountPage.openAccount(accountType, initialAccountId);
 
   await accountOverviewPage.goto();
   const allAccountIds = await accountOverviewPage.getAllAccountIds();

@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { openAccount } from '../helpers/userFlows';
+import { registerAndOpenAccount } from '../helpers/userFlows';
 
 
 test('opens a new savings account funded from existing account', async ({ page }) => {
 
-    const { newAccountId, allAccountIds } = await openAccount(page);
+    const { newAccountId, allAccountIds } = await registerAndOpenAccount(page);
     expect(allAccountIds).toContain(newAccountId);
 
 });

@@ -28,17 +28,21 @@ export class AccountOverviewPage extends BasePage {
     }
 
     async getAllAccountIds(): Promise<string[]> {
-        
+
         await this.accountLinks.first().waitFor();
         const count = await this.accountLinks.count();
         const accountIds: string[] = [];
 
-        for (let i = 0; i < count; i++){
+        for (let i = 0; i < count; i++) {
             const text = await this.accountLinks.nth(i).textContent();
             accountIds.push(text ?? '')
         }
-        
+
         return accountIds;
+    }
+
+    async clickAccountLink(accountId: string): Promise<void> {
+        await this.accountLinks.filter({ hasText: accountId }).click();
     }
 }
 

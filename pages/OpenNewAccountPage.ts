@@ -33,4 +33,6 @@ export class OpenNewAccountPage extends BasePage {
         //return {initialAccountId, this.newAccountId, allAccountIds};
         
     }
+
+    // async verifyAccount
 }
