@@ -15,4 +15,5 @@ export function createRegistrationDetails(): RegistrationDetails {
     password: 'Secret123',
     confirmPassword: 'Secret123'
   };
-}
+} 
+

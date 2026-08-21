@@ -4,6 +4,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   retries: 0,
+  workers: 3,
   reporter: 'html',
   use: {
     baseURL: 'https://parabank.parasoft.com',
