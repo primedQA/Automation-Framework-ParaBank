@@ -4,7 +4,7 @@ import { LoginPage, LoginCredentials } from '../pages/LoginPage';
 import { createRegistrationDetails } from '../testData/registrationData';
 import { OpenNewAccountPage } from '../pages/OpenNewAccountPage';
 import { AccountOverviewPage } from '../pages/AccountOverviewPage';
-import {expect} from '@playwright/test'
+import { expect } from '@playwright/test'
 
 
 export async function registerNewUser(page: Page): Promise<RegistrationDetails> {
@@ -25,7 +25,7 @@ export async function loginUser(page: Page, credentials: LoginCredentials): Prom
   await loginPage.login(credentials);
 }
 
-  export async function registerAndOpenAccount(page: Page, accountType: string = 'SAVINGS'): Promise<{initialAccountId:string; newAccountId: string; allAccountIds: string[] }> {
+export async function registerAndOpenAccount(page: Page, accountType: string = 'SAVINGS'): Promise<{ initialAccountId: string; newAccountId: string; allAccountIds: string[] }> {
 
   await registerNewUser(page);
 
@@ -35,7 +35,7 @@ export async function loginUser(page: Page, credentials: LoginCredentials): Prom
 
   const openNewAccountPage = new OpenNewAccountPage(page);
   await openNewAccountPage.goto();
-  
+
   const newAccountId = await openNewAccountPage.openAccount(accountType, initialAccountId);
 
   await accountOverviewPage.goto();
@@ -43,4 +43,10 @@ export async function loginUser(page: Page, credentials: LoginCredentials): Prom
 
   return { initialAccountId, newAccountId, allAccountIds };
 
+}
+
+export async function goToOverviewAndGetFirstAccountId(page: Page): Promise<string> {
+  const accountOverviewPage = new AccountOverviewPage(page);
+  await accountOverviewPage.goto();
+  return await accountOverviewPage.getFirstAccountId();
 }
