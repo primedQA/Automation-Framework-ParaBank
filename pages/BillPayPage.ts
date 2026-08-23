@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export interface BillPayDetails {
@@ -77,8 +77,8 @@ export class BillPayPage extends BasePage {
 
     }
 
-    async getBillPayConfirmationTest(): Promise<string> {
-
+    async getBillPayConfirmationText(): Promise<string> {
+        await expect(this.billPayConfirmationrecipient).not.toHaveText('');
         const text = await this.billPayResultPanel.textContent();
         return (text ?? '').replace(/\s+/g, ' ').trim();
     }
