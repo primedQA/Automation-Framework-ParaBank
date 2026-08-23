@@ -19,12 +19,13 @@ test('Verify account number and pay bill', async ({ page }) => {
     const billPayDetails = createBillPayDetails();
     await billPayPage.payBill(billPayDetails);
 
-    const resultText = await billPayPage.getBillPayConfirmationTest();
+    const resultText = await billPayPage.getBillPayConfirmationText();
 
-    const expectedText = `Bill Payment Complete Bill Payment to ${billPayDetails.payeeName} in the amount of $${billPayDetails.amount} from account ${expectedAccountId} was successful. See Account Activity for more details.`;
+    const expectedText = `Bill Payment Complete Bill Payment to ${billPayDetails.payeeName} in the amount of $${billPayDetails.amount}.00 from account ${expectedAccountId} was successful. See Account Activity for more details.`;
 
+    expect(resultText).toBe(expectedText);
 
-
+    console.log(`result text: ${resultText} \n expected result text: ${expectedText}`)
 
 
 
