@@ -10,7 +10,7 @@ test('transfer funds between accounts', async ({ page }) => {
 
     await transferFundsPage.goto();
     
-    await transferFundsPage.transferFunds('1000.00', initialAccountId, newAccountId)
+    await transferFundsPage.transferFunds(initialAccountId, newAccountId, '1000.00')
 
     const results = await transferFundsPage.getTransferResults();
 

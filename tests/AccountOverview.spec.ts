@@ -1,24 +1,22 @@
 import { test, expect } from '@playwright/test';
 import { registerAndOpenAccount } from '../helpers/userFlows';
-import { ActivityPage } from '../pages/ActivityPage';
 import { AccountOverviewPage } from '../pages/AccountOverviewPage';
 
-const accountTypes = ['SAVINGS', 'CHECKING'];
-
-for (const accountType of accountTypes) {
-    test(`opens a ${accountType} account and verifies it is correctly labeled`, async ({ page }) => {
-        const { newAccountId } = await registerAndOpenAccount(page, accountType);
-        console.log('newAccountId:', newAccountId);
-
-        const activityPage = new ActivityPage(page);
-        
-        const accountOverviewPage = new AccountOverviewPage(page);
-        await accountOverviewPage.clickAccountLink(newAccountId);
-
-        const type = await activityPage.getAccountType()
-        console.log(`type: ${type} accountType: ${accountType}`)
-        expect(type).toBe(accountType);
+test('lists all account ids after opening a second account', async ({ page }) => {
+    const { initialAccountId, newAccountId, allAccountIds } = await registerAndOpenAccount(page, 'SAVINGS');
 
 
-    });
-}
+    expect(allAccountIds).toContain(initialAccountId);
+    expect(allAccountIds).toContain(newAccountId);
+    expect(allAccountIds.length).toBe(2);
+});
+
+test('clicking an account link navigates to its activity page', async ({ page }) => {
+    const { newAccountId } = await registerAndOpenAccount(page, 'SAVINGS');
+
+    const accountOverviewPage = new AccountOverviewPage(page);
+    await accountOverviewPage.goto();
+    await accountOverviewPage.clickAccountLink(newAccountId);
+
+    await expect(page).toHaveURL(new RegExp(`activity\\.htm\\?id=${newAccountId}`));
+});

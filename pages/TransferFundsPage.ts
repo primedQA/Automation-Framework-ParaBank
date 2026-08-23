@@ -31,8 +31,7 @@ export class TransferFundsPage extends BasePage {
         await this.navigate(this.url)
     }
 
-    async transferFunds(amount: string, fromAccountId: string, toAccountId: string): Promise<void> {
-
+    async transferFunds(fromAccountId: string, toAccountId: string, amount: string = '100.00'): Promise<void> {
         await this.amount.fill(amount);
         await this.fromAccount.selectOption(fromAccountId);
         await this.toAccount.selectOption(toAccountId);
@@ -40,14 +39,14 @@ export class TransferFundsPage extends BasePage {
         await this.transferCompleteMessage.waitFor();
     }
 
-    async getTransferResults(): Promise<{amount:number, fromAccountId:string, toAccountId:string}> {
+    async getTransferResults(): Promise<{ amount: number, fromAccountId: string, toAccountId: string }> {
 
 
         return {
             amount: parseFloat((await this.amountResult.textContent())?.replace('$', '') ?? '0'),
             fromAccountId: (await this.fromAccountResult.textContent()) ?? '',
             toAccountId: (await this.toAccountResult.textContent()) ?? '',
-            
+
         };
 
     }
