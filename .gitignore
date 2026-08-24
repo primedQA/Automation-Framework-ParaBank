@@ -4,3 +4,5 @@ test-results/
 playwright-report/
 .env
 context.txt
+tests/ForPractice/
+ci-failure-log.txt
