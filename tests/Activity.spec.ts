@@ -22,14 +22,12 @@ for (const accountType of accountTypes) {
         const newAccountTxtCount = await activityPage.getTransactionCount();
         expect(newAccountTxtCount).toBe(2);
 
-        const { credits, debits } = await activityPage.getDebitAndCreditAmounts();
-        
+        const { credits, debits } = await activityPage.getDebitAndCreditAmounts();  
         expect(credits).toContain(`$${amount}`);
+
         await activityPage.goto(initialAccountId);
 
         const {debits: initialAccountDebits} = await activityPage.getDebitAndCreditAmounts()
-
-        
 
         expect(initialAccountDebits).toContain(`$${amount}`);
 
