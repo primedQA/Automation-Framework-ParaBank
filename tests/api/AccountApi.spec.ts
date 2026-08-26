@@ -1,11 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { registerAndOpenAccount, registerNewUser } from '../../helpers/userFlows';
 import { TransferFundsPage } from '../../pages/TransferFundsPage';
+import { accountApiUrl } from '../../helpers/apiEndpoints';
 
 const accountTypes = ['SAVINGS', 'CHECKING'];
-
-const accountApiUrl = (accountId: string | number) => `/parabank/services_proxy/bank/accounts/${accountId}`;
-
 
 for (const accountType of accountTypes) {
   test(`GET account by id returns matching account details for ${accountType}`, async ({ page }) => {
