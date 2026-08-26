@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { registerAndOpenAccount, registerNewUser, goToOverviewAndGetFirstAccountId } from '../../helpers/userFlows';
-
+import {  registerNewUser, goToOverviewAndGetFirstAccountId } from '../../helpers/userFlows';
+import { accountApiUrl, createAccountUrl } from '../../helpers/apiEndpoints'
 
 const accountTypes = [
     { label: 'Checkings', value: 0 },
@@ -12,10 +12,10 @@ for (const {label, value} of accountTypes) {
         await registerNewUser(page);
         const initialAccountId = await goToOverviewAndGetFirstAccountId(page)
 
-        const accountResponse = await page.request.get(`/parabank/services_proxy/bank/accounts/${initialAccountId}`);
+        const accountResponse = await page.request.get(accountApiUrl(initialAccountId));
         const { customerId } = await accountResponse.json();
 
-        const response = await page.request.post('/parabank/services_proxy/bank/createAccount', {
+        const response = await page.request.post(createAccountUrl, {
             params: {
                 customerId,
                 newAccountType: value,
