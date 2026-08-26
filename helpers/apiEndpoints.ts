@@ -9,7 +9,7 @@ export const customerAccountsUrl = (customerId: string | number) =>
     `/parabank/services_proxy/bank/customers/${customerId}/accounts`;
 
 // Create Account
-export const createAccountUrl = `/parabank/services_proxy/bank/createAccount`
+export const createAccountUrl = '/parabank/services_proxy/bank/createAccount';
 
 // Money Movement
 
@@ -24,4 +24,4 @@ export const requestLoanUrl = '/parabank/services_proxy/bank/requestLoan';
 
 // Customer Profile
 export const updateCustomerUrl = (customerId: string | number) =>
-  `/parabank/services_proxy/bank/customers/update/${customerId}`;
+    `/parabank/services_proxy/bank/customers/update/${customerId}`;
